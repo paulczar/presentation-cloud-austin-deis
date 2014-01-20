@@ -115,28 +115,7 @@ knife[:rackspace_api_key]      = "#{ENV['OS_PASSWORD']}"
 knife[:environment]            = 'deis'
 knife[:rackspace_version]      = 'v2'
 knife[:rackspace_region]       = :dfw
-knife[:rackspace_flavor]       = 'performance1-2'
 EOF
-```
-
-### Create a databag for users
-
-```
-$ EDITOR=vi knife data bag create users deis-ops
-```
-The last command will open up `vim`  paste the following contents in replacing the ssh key with your own public key.
-
-```
-{
-  "id": "deis-ops",
-  "password": "*",
-  "ssh_keys": [
-    "<SSH-PUBLIC-KEY>"
-  ],
-  "groups": [ "sysadmin" ],
-  "shell": "\/bin\/bash",
-  "comment": "Deis Operator account"
-}
 ```
 
 ### Install Rackspace Nova Client
@@ -178,19 +157,22 @@ $ nova list
 
 ## Build a base image for Deis
 
+### Launce a new instance:
+
 If we create a base image and pre-install some software we'll get a faster booting system for auto-provisioning:
 
 ```
 $ bundle exec knife rackspace server create \
   --image '80fbcb55-b206-41f9-9bc2-2dd7aac6c061' \
   --node-name 'deis-base-image' \
-  --run-list 'recipe[deis::default]'
+  --run-list 'recipe[deis::default]' \
+  --flavor 'performance1-1'
 ...
 ...
 Instance ID: 56760bf1-b977-405e-9348-f70b15a14b87
 Host ID: 97da00a12312a7e455bda70c6dfab8833953e2a03b081aeedfd68152
-Name: deis_base_image
-Flavor: 2 GB Performance
+Name: deis-base-image
+Flavor: 1 GB Performance
 Image: Ubuntu 12.04 
 Metadata: []
 Public DNS Name: 23-253-69-98.static.cloud-ips.com
@@ -202,8 +184,11 @@ Environment: deis
 
 Take note of the `Instance ID`, `Public IP Address` and `Password` 
 
+
+
 ```
 $ DEIS_IP=<IP_OF_SERVER>
+$ ssh-copy-id
 $ scp contrib/rackspace/*.sh deis-ops@$DEIS_IP:~/
 $ ssh deis-ops@$DEIS_IP 'sudo apt-get -yqq install inotify-tools'
 $ ssh deis-ops@$DEIS_IP 'sudo ~/prepare-rackspace-image.sh'
@@ -254,11 +239,12 @@ Launch the server from the image you created earlier:
 
 ```
 $ knife rackspace server create \
- --image "29c0c2cd-24e1-4b36-bcb7-519d81ea11ff" \
- --rackspace-metadata "{\"Name\": \"deis-controller\"}" \
- --rackspace-disk-config MANUAL \
- --server-name deis-controller \
- --node-name deis-controller
+  --image "29c0c2cd-24e1-4b36-bcb7-519d81ea11ff" \
+  --rackspace-metadata "{\"Name\": \"deis-controller\"}" \
+  --rackspace-disk-config MANUAL \
+  --server-name deis-controller \
+  --node-name deis-controller \
+  --flavor 'performance1-2'
 ```
 
 Take note of the `Instance ID`, `Public IP Address` and `Password`.
