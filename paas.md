@@ -328,7 +328,7 @@ $ sudo pip install deis
 
 ### Register Admin User
 
-First user to register becomes the Admin.
+First user to register becomes the Admin:
 
 ```
 $ deis register http://deis
@@ -338,6 +338,11 @@ password (confirm):
 email: admin@example.com
 Registered admin
 Logged in as admin
+```
+
+Push your public key to deis:
+
+```
 $ deis keys:add ~/.ssh/id_rsa.pub 
 Uploading SSH_KEY to Deis...done
 ```
@@ -364,11 +369,11 @@ No Vagrant VMs discovered.
 
 ## Deploy Formations & Layers
 
-??? TALK ABOUT THESE???
+### Formation
 
-Single Host
+Formations are collections of infrastructure for serving applications.   We'll call our first Formation `dev` for development.
 
-Create formation:
+Create formation (using the wildcard domain from earlier in the `--domain` argument):
 
 ```
 $ deis formations:create dev --domain=162.242.140.21.xip.io
@@ -376,16 +381,23 @@ Creating formation... done, created dev
 See `deis help layers:create` to begin building your formation
 ```
 
-Use the wildcard domain from earlier in the `--domain` argument.
+### Layers
 
-Create layers:
+Layers are a heterogenerous collection of nodes that perform one of two function:
+
+1. Proxy - Directs traffic to the appropriate container running the application.
+2. Runtime - Runs the containers that hold the applications.
+
+We're going to create a layer called `nodes` that will perform both the proxy and runtime functions:
 
 ```
 $ deis layers:create dev nodes rackspace-dfw --proxy=y --runtime=y
 Creating nodes layer... done in 4s
 ```
 
-Scale Nodes:
+### Build Nodes
+
+Next we tell deis to spin up two Cloud Servers which will become members of the `nodes` layer.
 
 ```
 $ deis nodes:scale dev nodes=2
@@ -393,6 +405,8 @@ Scaling nodes... but first, coffee!
 done in 345s
 Use `deis create --formation=dev` to create an application
 ```
+
+This can sometimes take longer than the `deis` cli timeout.   Don't fear,  just wait a bit longer, this could be a great time to explore the `deis` cli by running `deis help`.
 
 ## Update Cloud Load Balancer
 
