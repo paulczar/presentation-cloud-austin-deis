@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Hey IDIOT! change your title</title>
+		<title>Docking with Unicorns...</title>
 
 		<meta name="description" content="description of presentation">
 		<meta name="author" content="Paul Czarkowski">
@@ -37,57 +37,403 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h2>I did a thing</h2>
-					<h3>so I guess I should talk about it.</h3>
+					<h2>Brony Austin</h2>
+					<h3>Meetup Jan 2014</h3>
+					<h4>Docking with Unicorns</h4>
+					<img src="images/zebra_with_unicorn.jpg" class="stretch"><br><small>http://lady-cybercat.deviantart.com</small>
+					<p>
+						<small>Created by <a href="http://tech.paulcz.net">Zebra Britches</a> / <a href="http://twitter.com/pczarkowski">@zebrony</a></small>
+					</p>
+				</section>
+
+				<section>
+				  <img src="images/what_is_wrong.png"><br><small>http://shivymaneuver.deviantart.com</small>
+				</section>
+
+				<section>
+					<h2>Cloud Austin</h2>
+					<h3>Meetup Jan 2014</h3>
+					<h4>Docking with Unicorns</h4>
+					<img src="images/zebra_with_unicorn.jpg" class="stretch"><br><small>http://lady-cybercat.deviantart.com</small>
 					<p>
 						<small>Created by <a href="http://tech.paulcz.net">Paul Czarkowski</a> / <a href="http://twitter.com/pczarkowski">@pczarkowski</a></small>
 					</p>
 				</section>
 
-				<section>
-					<h2>I am not a DevOp</h2>
- 					<p>what even is?</p>
- 					<p><img src="images/sysadmin.jpg"><br>
-				</section>
-
-				<section>
-					<h2>Title</h2>
- 					<h3>subtest</h3>
- 					<ul class="fragment">
- 						<li>point 1
- 						<li>point 2
+				<section data-background="images/MyLittlePonyandtheHolyGrail.png">
+					<div style='background-color: rgba(255,255,255,0.8); border: 1px solid;'>
+						<h2>Platform as a Service</h2>
+ 						<h3>The Holy Grail of Cloud</h3>
+ 						<table style="margin: 0px auto;"><tr><td>
+ 				  <ul>
+ 						<li>Step 1: Write Code
+ 						<li>Step 2: ...
+ 						<li>Step 3: Application!
  					</ul>
+ 					<td><img src="images/write_code.gif">
+ 					</table>
+ 					<br><br>
+ 					<a href='http://www.youtube.com/watch?v=n7e5N6goLpQ'>http://www.youtube.com/watch?v=n7e5N6goLpQ</a><br>
+ 					^ My Little Pony  Monty Python & Holy Grail Mashup<br><br>
+ 					</div>
 				</section>
 
 				<section>
-				  <h2>Code!</h2>
-					<pre class="stretch"><code>
-#!/bin/bash
+ 					<h2>PAAS is nothing new</h2>
+ 					<ul>
+ 					 <li>Heroku
+ 					 <li>Elastic Beanstalk
+ 					 <li>Azure
+ 					</ul><br><br>
+ 					<p>but it is newly hot.  <p>Docker is part of the reason why.
+				</section>
 
-echo This is a pure code slide.
+				<section>
+ 					<h2>Platform as a Service</h2>
+					<h3>no longer the unicorn in the room</h3>
+ 					<p><img src="images/cloud_borat_paas_unicorn.png"><br>
+				</section>
+
+				<section>
+ 					<h2>Docker based PAAS platforms</h2>
+ 					<ul>
+ 					 <li><strike>DotCloud</strike>Docker
+ 					 <li>Dokku &lt; 100 lines of code!
+ 					 <li>flynn.io
+ 					 <li>deis.io
+ 					 <li>tsuru.io
+ 					 <li>Stackato*
+ 					 <li>Openshift*
+ 					</ul><br><br>
+ 					<p>* not docker based, but moving in that direction?
+				</section>
+
+				<section>
+				<h1>DEIS.IO</h1>
+				<img src="images/deis-lifter.png">
+				</section>
+
+
+				<section>
+				  <h2>What even is Deis ?</h2>
+				   	<h3>opensource PAAS</h3>
+				   	<h4>pronounced DAY-iss</h4>
+				   	<ul>
+				   	  <li>Docker
+				   	  <li>Chef
+				   	  <li>Nginx
+				   	  <li>Git
+				   	  <li>IaaS (ec2,rackspace,digitalocean)
+				    </ul>
+				  </ul>
+				</section>
+				<section>
+				  <h2>What even is Deis ?</h2>
+				  <p>deploys applications
+				  <ul>
+				  	<li>Heroku Buildpacks
+				   	<li>Chef Recipes
+				   	<li>Docker Images
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				  <img src="images/deis-drawing.png" class="stretch">
+				</section>				
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Chef Server</h3>
+				  <ul>
+				   	<li>bootstraps nodes ( inc Controller )
+				   	<li>Databags for Deis Users and Application state
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Deis Controller</h3>
+				  <ul>
+				   	<li>Management Endpoint - Web/API
+				   	<li>Talks to Chef / IAAS to provision/decom nodes
+				   	<li>git service
+				   	<li>Builds, Scales, and Destroys:
+				    <ul>
+				      <li>Formations
+				      <li>Layers
+				      <li>Applications
+				    </ul>
+				  </ul>
+				</section>
+
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Formations</h3>
+				  <ul>
+				   	<li>groupings of <i>Layers</i>
+				   	<li>logical seperation of workloads:
+				   	<ul>
+				   	  <li>could be regions: US,EU,AU,etc
+				   	  <li>could be environment: dev, test, prod
+				   	  <li>arbitrary.
+				   	</ul>
+				  </ul>
+				</section>
+
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Layers</h3>
+				  <ul>
+				    <li>worker nodes for Formation
+				   	<li>sets of heterogeneous nodes
+				   	<li>scale easily
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Proxy Layer</h3>
+				   	<ul>
+				   	  <li>Expose Applications to internets
+				   	  <li>Nginx proxies configured by a Chef Databag
+				   	  <li>Routes requests to Containers hosted in Runtime Layer
+				   	</ul>
+				</section>
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Runtime Layer</h3>
+				   	<ul>
+				   	  <li>Hosts <i>Docker</i> containers for <i>Formation</i>
+				   	  <li>Use Chef Databag to deploy containers for <i>Applications</i>
+				   	</ul>
+				</section>				
+
+				<section>
+				  <h2>Deis Architecture</h2>
+				   <h3>Applications</h3>
+				   	<ul>
+				   	  <li>Abstraction layer for your Application, not your actual app.
+				   	  <li>tied to a specific <i>Formation</i>
+				   	  <li>uses Containers to process requests and run jobs for deployed git repo.
+				   	  <li>Developer interface to push code, change config, scale, view logs, etc.
+				   	</ul>
+				</section>	
+
+				<section>
+				  <h2>Application Deployment</h2>
+				  <img src="images/unicorn_canon.jpg" class='stretch'>
+				  <p><small>http://twentypercentcooler.net/post/show/23858/2012-cannon-duo-earth_pony-eeveetachi-equine-eyewe</small></p>
+				</section>
+
+				<section>
+				  <h2>Supported Languages</h2><br><bR>
+<ul>
+<li>Ruby, Python, Node.js, Java, Clojure, Scala, 
+<li>Play, PHP, Perl, Dart and Go.
+<li>Heroku Buildpacks, Docker images, Chef recipes.
+</ul>
+				</section>				
+
+				<section>
+				  <h2>Application Deployment</h2>
+				  <h3>Stage 1 - Build</h3>
+				  <ul>
+				   	<li>Dev pushes code via git
+				   	<li>git push triggers app build
+				   	<li>tarball of app saved
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Application Deployment</h2>
+				  <h3>Stage 2 - Release</h3>
+				  <ul>
+				   	<li>triggered when <i>Build</i> is created or config changed
+				   	<li>Build is combined with config
+				   	<li>tags result with release #
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Application Deployment</h2>
+				  <h3>Stage 3 - Run</h3>
+				  <ul>
+				   	<li>Updates Chef databags and converges all nodes in <i>Formation</i>
+				   	<li>Specifies:
+				   	<ul>
+				   		<li>app releases, container placement, proxy layer configs
+				  	</ul>
+				   		<li>Performed in specific order to reduce downtime (to zero?)
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Backing Services</h2>
+				  <p> database, message queue, etc.
+				  <ul>
+				   	<li>decoupled -> environment variables
+				   	<ul>
+				   		<li>Deis Applications
+				   		<li>provided by existing database / MQ
+				   		<li>provided by third party services ( Cloud Databases, RDS, etc)
+				  	</ul>
+				   		<li>Swap backing services by changing env variables.
+				  </ul>
+				</section>
+
+				<section>
+				<h1>Live Demo!</h1>
+				<img src="images/dangerous-take-this.jpg" class='stretch'>
+				http://insanekitteh.deviantart.com
+				</section>
+
+				<section>
+				<img src="images/deis-paulcz.png">
+				</section>
+
+				<section>
+				<h2>Create/Deploy Application</h2>
+					<pre class="stretch"><code>
+$ cd ~/paas/apps/nodejs
+$ deis create --formation=demo --id=cloudaustin
+Creating application... done, created cloudaustin
+Warning: Permanently added the ECDSA host key for IP address '23.253.89.126' to the list of known hosts.
+Git remote deis added
+$ git push deis master
+Counting objects: 181, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (86/86), done.
+Writing objects: 100% (181/181), 28.53 KiB | 0 bytes/s, done.
+Total 181 (delta 101), reused 165 (delta 92)
+-----> Node.js app detected
+-----> Requested node range: 0.10.x
+-----> Resolved node version: 0.10.24
+-----> Downloading and installing node
+-----> Installing dependencies
+       Launching... done, v2
+<< SNIP >>
+-----> cloudaustin deployed to Deis
+       http://cloudaustin.deis.paulcz.net
+$
 					</code></pre>
 				</section>
 
-
 				<section>
-					<h2>Summary slide - you did a thing ... so what ?</h2>
-					<ul>
-					 <li>1
-					 <li>2
-					</ul>
+				<h2>Modify/Redeploy Application</h2>
+					<pre class="stretch"><code>
+$ cd ~/paas/apps/nodejs
+$ vim server.js
+...
+...
+$ git commit -am 'cloud austin'
+$ git push origin deis
+<< SNIP >>
+-----> Node.js app detected
+<< SNIP >>
+-----> cloudaustin deployed to Deis
+       http://cloudaustin.deis.paulcz.net
+$      
+					</code></pre>
 				</section>
 
-
 				<section>
-					<h2>Links</h2>
-					<p><a href="http://tech.paulcz.net">http://tech.paulcz.net</a></p><br>
-					<ul>
-						<li><a href="http://tech.paulcz.net">Link 1</a></li>
-					</ul>
+				<h2>Application Info</h2>
+					<pre class="stretch"><code>
+$ deis  info 
+=== cloudaustin Application
+{
+  "updated": "2014-01-19T20:48:09.187Z", 
+  "uuid": "a871873f-36cd-439f-a4cd-c84db752d598", 
+  "created": "2014-01-19T20:48:09.187Z", 
+  "formation": "demo", 
+  "owner": "admin", 
+  "id": "cloudaustin", 
+  "containers": "{}"
+}
+
+=== cloudaustin Containers
+
+--- web: `node server.js`
+web.1 up 2014-01-19T20:50:02.125Z (demo-nodes-1)
+$
+					</code></pre>
 				</section>
 
 				<section>
-					<h1>THE END</h1>
+				<h2>Application Logs</h2>
+					<pre class="stretch"><code>
+$ deis logs
+Jan 19 20:33:37 deis-controller cloudaustin: Config cloudaustin-v1 updated
+Jan 19 20:33:37 deis-controller cloudaustin: Build cloudaustin- created
+Jan 19 20:33:37 deis-controller cloudaustin: Release cloudaustin-v1 created
+Jan 19 20:45:20 deis-controller cloudaustin: Config cloudaustin-v1 updated
+Jan 19 20:45:20 deis-controller cloudaustin: Build cloudaustin- created
+Jan 19 20:45:20 deis-controller cloudaustin: Release cloudaustin-v1 created
+Jan 19 20:48:09 deis-controller cloudaustin: Config cloudaustin-v1 updated
+Jan 19 20:48:09 deis-controller cloudaustin: Build cloudaustin- created
+Jan 19 20:48:09 deis-controller cloudaustin: Release cloudaustin-v1 created
+Jan 19 20:50:02 deis-controller cloudaustin: Build cloudaustin-7fb1163 created
+Jan 19 20:50:02 deis-controller cloudaustin: Release cloudaustin-v2 created
+Jan 19 20:50:02 deis-controller cloudaustin: Containers scaled web=1
+Jan 19 20:50:14 demo-nodes cloudaustin[web.1]: Server listening on port 10001 in development mode
+Jan 19 20:56:19 deis-controller cloudaustin: Build cloudaustin-f7e94ab created
+Jan 19 20:56:19 deis-controller cloudaustin: Release cloudaustin-v3 created
+Jan 19 20:56:39 demo-nodes cloudaustin[web.1]: Server listening on port 10001 in development mode
+$
+					</code></pre>
+				</section>				
+
+				<section>
+				<h2>Expecting Visitors?  Scale App</h2>
+					<pre class="stretch"><code>
+$ deis scale web=6
+Scaling containers... but first, coffee!
+done in 21s
+
+=== cloudaustin Containers
+
+--- web: `node server.js`
+web.1 up 2014-01-19T20:50:02.125Z (demo-nodes-1)
+web.2 up 2014-01-19T21:04:25.013Z (demo-nodes-2)
+web.3 up 2014-01-19T21:04:25.023Z (demo-nodes-2)
+web.4 up 2014-01-19T21:04:25.031Z (demo-nodes-1)
+web.5 up 2014-01-19T21:04:25.040Z (demo-nodes-2)
+web.6 up 2014-01-19T21:04:25.050Z (demo-nodes-1)
+$
+					</code></pre>
+				</section>		
+
+				<section>
+				<h2>Destroy your app when done.</h2>
+					<pre class="stretch"><code>
+$ deis destroy --app=cloudaustin --confirm=cloudaustin
+Destroying cloudaustin... done in 40s
+Git remote deis removed
+$
+					</code></pre>
+				</section>		
+
+				<section>
+				<h2>Live Demo Finished!</h2>
+				<img src="images/demo_complete.jpg" class="stretch"><br>
+				<small>http://www.youtube.com/watch?v=R9oRrXX82vI</small>
+				</section>
+
+				<section>
+					<h2>Install your own PAAS?</h2>
+					<p><a href="http://deis.io/get-deis/">http://deis.io/get-deis/</a>
+					<p>Guide coming soon to Rackspace Developers Blog.
+					<img src="images/canned_unicorn.jpg"><br>
+					<small>http://www.thinkgeek.com/product/e5a7/</small>
+				</section>
+
+				<section>
+					<h1>Thanks!</h1>
+					<img src="images/ponyhug.jpg">
 					<h3>BY Paul Czarkowski  / @pczarkowski </h3>
 				</section>
 
