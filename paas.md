@@ -26,14 +26,13 @@ $ mv ~/Downloads/<username>-validator.pem .chef/
 Clone the deis project into your paas working directory:
 
 ```
-$ mkdir -p ~/paas
 $ cd ~/paas
 $ git clone https://github.com/opdemand/deis.git
 ```
 
 ### Install Pre-reqs
 
-Assuming you have a working Ruby 1.9.3+ you should be able to use the Gemfile from the deis project to ensure you have all the necessary tools:
+Assuming you have a working `Ruby 1.9.3+` and the `bundler` gem installed you should be able to use the `Gemfile` from the deis project to ensure you have all the necessary tools:
 
 ```
 $ cd ~/paas/deis
@@ -87,7 +86,7 @@ Created data_bag[deis-apps]
 
 I'm using Rackspace cloud servers for this as I have the (http://developer.rackspace.com/blog/developer-love-welcome-to-the-rackspace-cloud-developer-discount.html)[Rackspace Developer Discount] which is enough discount to host this for free.
 
-Since Deis will want my rackspace credentials to configure worker nodes I recomment creating a user under (https://mycloud.rackspace.com/account#users/create)[User Management] in your account to use for this.
+Since Deis will want your rackspace credentials to configure worker nodes I recomment creating a user under (https://mycloud.rackspace.com/account#users/create)[User Management] in your account to use for this.
 
 ### Create a Cloud Load Balancer
 
@@ -99,9 +98,11 @@ Log into mycloud.rackspace.com and click on the (https://mycloud.rackspace.com/l
 
 ### Wildcard DNS
 
-Deis' proxy layer requires you to set up Wildcard DNS to point to your proxy layer.  Fortunately this is made easy in testing by using the (http://xip.io)[xip.io] domain which does this for you.  
+Deis' proxy layer requires you to set up Wildcard DNS to point to your proxy layer.  There are many ways to achieve this here are two options:
 
-We can use this with our Cloud Load Balancer to load balance our applications.   My Load Balancer has a public IP of `162.242.140.21` therefore my wildcard domain will be `162.242.140.21.xip.io`.   Remember this.
+1. Rackspace Cloud DNS can host wildcard DNS entries, if you already have DNS hosted by rackspace using Cloud DNS simply add an A record for `*.deis` under your domain and point it to the IP of your load balancer.
+
+2. The (http://xip.io)[xip.io] domain does wildcard DNS based on your IP.  We can use this with our Cloud Load Balancer to load balance our applications.   My Load Balancer has a public IP of `162.242.140.21` therefore my wildcard domain will be `162.242.140.21.xip.io`.   Remember this.
 
 ### Configure Knife for Rackspace
 
