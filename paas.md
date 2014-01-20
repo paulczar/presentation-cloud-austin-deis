@@ -182,26 +182,53 @@ Password: **************
 Environment: deis
 ```
 
-Take note of the `Instance ID`, `Public IP Address` and `Password` 
+Take note of the `Instance ID`, `Public IP Address` and `Password`.  We'll need them later.
 
+### Add users / keys to instance
 
+Go ahead and add an `solum-ops` user and upload your public keys to it:
 
 ```
 $ DEIS_IP=<IP_OF_SERVER>
-$ ssh-copy-id
+$ ssh-copy-id root@$DEIS_IP
+$ ssh root@$DEIS_IP 
+deis$ useradd --comment 'deis ops user' --home-dir '/home/deis-ops' \
+  --shell '/bin/bash' --create-home deis-ops
+deis$ mkdir -p /home/deis-ops/.ssh
+deis$ cp /root/.ssh/authorized_keys /home/deis-ops/.ssh/authorized_keys
+deis$ chown -R deis-ops:deis-ops /home/deis-ops
+deis$ chmod 0700 /home/deis-ops/.ssh
+deis$ chmod 0600 /home/deis-ops/.ssh/authorized_keys
+deis$ echo 'deis-ops ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/deis-ops
+deis$ chmod 0440 /etc/sudoers.d/deis-ops
+deis$ exit
+```
+
+Check that you can log in with these new creds:
+
+```
+$ ssh deis-ops@$DEIS_IP
+deis$ sudo bash
+root@deis$ exit
+deis$ exit
+```
+
+### Finish preparing image
+
+Lastly we want to update the kernel on the image and clean it up:
+
+```
+$ ssh deis-ops@$DEIS_IP 'sudo apt-get update'
 $ scp contrib/rackspace/*.sh deis-ops@$DEIS_IP:~/
-$ ssh deis-ops@$DEIS_IP 'sudo apt-get -yqq install inotify-tools'
 $ ssh deis-ops@$DEIS_IP 'sudo ~/prepare-rackspace-image.sh'
+$ ssh deis-ops@$DEIS_IP 'sudo apt-get install -yq linux-image-generic-lts-raring linux-headers-generic-lts-raring'
 $ ssh deis-ops@$DEIS_IP 'sudo rm -rf /etc/chef'
 ```
 
-## Create an image from this server
+### Create an image from this server
 
 ```
 $ nova image-create deis-base-image deis-base-image
-/usr/lib/python2.7/dist-packages/gobject/constants.py:24: Warning: g_boxed_type_register_static: assertion 'g_type_from_name (name) == 0' failed
-  import gobject._gobject
-
 ```
 
 After a few minutes you should see this response to running `nova image-list`, if you're impatient like me wrap your command with a `watch`:
@@ -212,9 +239,17 @@ $ watch 'nova image-list | grep deis'
 
 ```
 
-## Delete the Base Instance
+Once the image is active take note of the image id:
 
-No need to keep it around and keep paying for it:
+```
+$ IMAGE=`knife rackspace image list | grep 'deis-base-image' | awk '{print $1}'`
+$ echo $IMAGE
+```
+
+
+### Delete the instance
+
+No need to keep the instance around and keep paying for it once you have the image:
 
 ```
 $ bundle exec knife rackspace server delete <INSTANCE_ID> --purge
@@ -222,24 +257,13 @@ $ bundle exec knife rackspace server delete <INSTANCE_ID> --purge
 
 ## Create the Deis Controller server
 
-### Create Databags
-
-Deis uses some databags for keeping track of users and state:
-
-```
-$ knife data bag create deis-users
-$ knife data bag create deis-formations
-$ knife data bag create deis-apps
-```
-
-
 ### Launch the Server
 
 Launch the server from the image you created earlier:
 
 ```
 $ knife rackspace server create \
-  --image "29c0c2cd-24e1-4b36-bcb7-519d81ea11ff" \
+  --image "$IMAGE" \
   --rackspace-metadata "{\"Name\": \"deis-controller\"}" \
   --rackspace-disk-config MANUAL \
   --server-name deis-controller \
@@ -249,7 +273,8 @@ $ knife rackspace server create \
 
 Take note of the `Instance ID`, `Public IP Address` and `Password`.
 
-Chuck an entry in your hosts file and upload your ssh key:
+If you have an easy to manage domain add an A record for `deis` to it for the Public IP address.  If not
+add an entry to your hosts file ( or do both! I did ):
 
 ```
 $ sudo sh -c "echo '<IP_OF_SERVER> deis' >> /etc/hosts"
@@ -290,6 +315,8 @@ then converge the node by running chef client on it:
 ```
 $ ssh deis-ops@deis sudo chef-client
 ```
+
+If this first run fails,  rerun the chef-client command above.
 
 ## Testing Deis
 
