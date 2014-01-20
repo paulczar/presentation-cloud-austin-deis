@@ -4,8 +4,6 @@
 
 Chef offers a free hosted service for up to five servers.  That's plenty for this exercise so go to the [registration page](https://www.getchef.com/account) and create yourself a user.  At some point it will prompt you to generate and save a key, do that and download it.
 
-* [http://manage.opscode.com](http://manage.opscode.com)
-
 Once you have signed up you can download a knife config file and generate a validation key from the [https://manage.opscode.com/organizations](Organizations) page.  We can save those down and then move them to a local working directory.
 
 ### Prepare Working Environment
