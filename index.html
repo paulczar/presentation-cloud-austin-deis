@@ -113,6 +113,16 @@
 				<img src="images/deis-lifter.png">
 				</section>
 
+				<section>
+				<h1>Prize Time!</h1>
+				<h3>http://deis.paulcz.net</h3><br><br>
+				<ol>
+				<li>Deploy a single node app to this!
+				<li>Answer 3 questions based on presentation
+				<li>Raspberry Pi
+				</ol><br><br>
+				<p><i>Don't break it! I have a live demo to do later</i>
+				</section>
 
 				<section>
 				  <h2>What even is Deis ?</h2>
@@ -140,15 +150,16 @@
 				<section>
 				  <h2>Deis Architecture</h2>
 				  <img src="images/deis-drawing.png" class="stretch">
-				</section>				
+				</section>
 
 				<section>
 				  <h2>Deis Architecture</h2>
 				   <h3>Chef Server</h3>
 				  <ul>
 				   	<li>bootstraps nodes ( inc Controller )
-				   	<li>Databags for Deis Users and Application state
-				  </ul>
+				   	<li>Databags* for Deis Users and Application state
+				  </ul><br><br>
+				  <p align="left"><i>* functionality moving to etcd + confd</i>
 				</section>
 
 				<section>
@@ -210,7 +221,7 @@
 				   	  <li>Hosts <i>Docker</i> containers for <i>Formation</i>
 				   	  <li>Use Chef Databag to deploy containers for <i>Applications</i>
 				   	</ul>
-				</section>				
+				</section>
 
 				<section>
 				  <h2>Deis Architecture</h2>
@@ -221,7 +232,7 @@
 				   	  <li>uses Containers to process requests and run jobs for deployed git repo.
 				   	  <li>Developer interface to push code, change config, scale, view logs, etc.
 				   	</ul>
-				</section>	
+				</section>
 
 				<section>
 				  <h2>Application Deployment</h2>
@@ -232,11 +243,11 @@
 				<section>
 				  <h2>Supported Languages</h2><br><bR>
 <ul>
-<li>Ruby, Python, Node.js, Java, Clojure, Scala, 
+<li>Ruby, Python, Node.js, Java, Clojure, Scala,
 <li>Play, PHP, Perl, Dart and Go.
 <li>Heroku Buildpacks, Docker images, Chef recipes.
 </ul>
-				</section>				
+				</section>
 
 				<section>
 				  <h2>Application Deployment</h2>
@@ -244,7 +255,7 @@
 				  <ul>
 				   	<li>Dev pushes code via git
 				   	<li>git push triggers app build
-				   	<li>tarball of app saved
+				   	<li>uses <a href="https://github.com/flynn/slugbuilder">slugbuilder</a>to process buildpack into a tarball
 				  </ul>
 				</section>
 
@@ -336,22 +347,22 @@ $ git push origin deis
 << SNIP >>
 -----> cloudaustin deployed to Deis
        http://cloudaustin.deis.paulcz.net
-$      
+$
 					</code></pre>
 				</section>
 
 				<section>
 				<h2>Application Info</h2>
 					<pre class="stretch"><code>
-$ deis  info 
+$ deis  info
 === cloudaustin Application
 {
-  "updated": "2014-01-19T20:48:09.187Z", 
-  "uuid": "a871873f-36cd-439f-a4cd-c84db752d598", 
-  "created": "2014-01-19T20:48:09.187Z", 
-  "formation": "demo", 
-  "owner": "admin", 
-  "id": "cloudaustin", 
+  "updated": "2014-01-19T20:48:09.187Z",
+  "uuid": "a871873f-36cd-439f-a4cd-c84db752d598",
+  "created": "2014-01-19T20:48:09.187Z",
+  "formation": "demo",
+  "owner": "admin",
+  "id": "cloudaustin",
   "containers": "{}"
 }
 
@@ -385,7 +396,7 @@ Jan 19 20:56:19 deis-controller cloudaustin: Release cloudaustin-v3 created
 Jan 19 20:56:39 demo-nodes cloudaustin[web.1]: Server listening on port 10001 in development mode
 $
 					</code></pre>
-				</section>				
+				</section>
 
 				<section>
 				<h2>Expecting Visitors?  Scale App</h2>
@@ -405,7 +416,7 @@ web.5 up 2014-01-19T21:04:25.040Z (demo-nodes-2)
 web.6 up 2014-01-19T21:04:25.050Z (demo-nodes-1)
 $
 					</code></pre>
-				</section>		
+				</section>
 
 				<section>
 				<h2>Destroy your app when done.</h2>
@@ -415,7 +426,7 @@ Destroying cloudaustin... done in 40s
 Git remote deis removed
 $
 					</code></pre>
-				</section>		
+				</section>
 
 				<section>
 				<h2>Live Demo Finished!</h2>
