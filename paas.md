@@ -217,7 +217,7 @@ Lastly we want to update the kernel on the image and clean it up:
 ```
 $ ssh deis-ops@$DEIS_IP 'sudo apt-get update'
 $ scp contrib/rackspace/*.sh deis-ops@$DEIS_IP:~/
-$ ssh deis-ops@$DEIS_IP 'sudo ~/prepare-rackspace-image.sh'
+$ ssh deis-ops@$DEIS_IP 'sudo ~/prepare-controller-image.sh'
 $ ssh deis-ops@$DEIS_IP 'sudo apt-get install -yq linux-image-generic-lts-raring linux-headers-generic-lts-raring'
 $ ssh deis-ops@$DEIS_IP 'sudo rm -rf /etc/chef'
 ```
