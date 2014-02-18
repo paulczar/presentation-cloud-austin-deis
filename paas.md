@@ -153,7 +153,7 @@ $ nova list
 +--------------------------------------+-----------------+--------+------------+-------------+----------------------------------------------------------------------------------------+
 ```
 
-## Build a base image for Deis
+## Build a base image for Deis Controller Node:
 
 ### Launce a new instance:
 
@@ -252,6 +252,97 @@ No need to keep the instance around and keep paying for it once you have the ima
 $ bundle exec knife rackspace server delete <INSTANCE_ID> --purge
 ```
 
+## Build a base image for non controller Deis nodes:
+
+### Launce a new instance:
+
+If we create a base image and pre-install some software we'll get a faster booting system for auto-provisioning:
+
+```
+$ bundle exec knife rackspace server create \
+  --image '80fbcb55-b206-41f9-9bc2-2dd7aac6c061' \
+  --node-name 'deis-node-image' \
+  --flavor 'performance1-1'
+...
+...
+Instance ID: f2236fa6-1e2d-4746-ac87-a3dd6b2de811
+Host ID: 97da00a12312a7e455bda70c6dfab8833953e2a03b081aeedfd68152
+Name: deis-node-image
+Flavor: 1 GB Performance
+Image: Ubuntu 12.04 
+Metadata: []
+Public DNS Name: 23-253-69-98.static.cloud-ips.com
+Public IP Address: 23.253.69.98
+Private IP Address: 10.208.101.31
+Password: **************
+Environment: deis
+```
+
+Take note of the `Instance ID`, `Public IP Address` and `Password`.  We'll need them later.
+
+### Add users / keys to instance
+
+Go ahead and add an `deis-ops` user and upload your public keys to it:
+
+```
+$ DEIS_IP=<IP_OF_SERVER>
+$ ssh-copy-id root@$DEIS_IP
+$ ssh root@$DEIS_IP 
+deis$ useradd --comment 'deis ops user' --home-dir '/home/deis-ops' \
+  --shell '/bin/bash' --create-home deis-ops
+deis$ mkdir -p /home/deis-ops/.ssh
+deis$ cp /root/.ssh/authorized_keys /home/deis-ops/.ssh/authorized_keys
+deis$ chown -R deis-ops:deis-ops /home/deis-ops
+deis$ chmod 0700 /home/deis-ops/.ssh
+deis$ chmod 0600 /home/deis-ops/.ssh/authorized_keys
+deis$ echo 'deis-ops ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/deis-ops
+deis$ chmod 0440 /etc/sudoers.d/deis-ops
+deis$ exit
+```
+
+Check that you can log in with these new creds:
+
+```
+$ ssh deis-ops@$DEIS_IP
+deis$ sudo bash
+root@deis$ exit
+deis$ exit
+```
+
+### Finish preparing image
+
+Lastly we want to update the kernel on the image and clean it up:
+
+```
+$ ssh deis-ops@$DEIS_IP 'sudo apt-get update'
+$ scp contrib/rackspace/*.sh deis-ops@$DEIS_IP:~/
+$ ssh deis-ops@$DEIS_IP 'sudo ~/prepare-node-image.sh'
+$ ssh deis-ops@$DEIS_IP 'sudo apt-get install -yq linux-image-generic-lts-raring linux-headers-generic-lts-raring'
+$ ssh deis-ops@$DEIS_IP 'sudo rm -rf /etc/chef'
+```
+
+### Create an image from this server
+
+```
+$ nova image-create deis-node-image deis-node-image
+```
+
+After a few minutes you should see this response to running `nova image-list`, if you're impatient like me wrap your command with a `watch`:
+
+```
+$ watch 'nova image-list | grep deis-node'
+| f2236fa6-1e2d-4746-ac87-a3dd6b2de811 | deis-node-image                                              | ACTIVE | 633d5d88-54b3-463c-80fe-c119f4eb33a3 |
+
+```
+
+### Delete the instance
+
+No need to keep the instance around and keep paying for it once you have the image:
+
+```
+$ bundle exec knife rackspace server delete <INSTANCE_ID> --purge
+```
+
 ## Create the Deis Controller server
 
 ### Launch the Server
@@ -330,7 +421,7 @@ $ sudo pip install deis
 First user to register becomes the Admin:
 
 ```
-$ deis register http://deis
+$ deis register http://deis:8000
 username: admin
 password: 
 password (confirm): 
