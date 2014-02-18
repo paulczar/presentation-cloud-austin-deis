@@ -163,7 +163,6 @@ If we create a base image and pre-install some software we'll get a faster booti
 $ bundle exec knife rackspace server create \
   --image '80fbcb55-b206-41f9-9bc2-2dd7aac6c061' \
   --node-name 'deis-base-image' \
-  --run-list 'recipe[deis::default]' \
   --flavor 'performance1-1'
 ...
 ...
