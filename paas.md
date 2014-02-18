@@ -184,7 +184,7 @@ Take note of the `Instance ID`, `Public IP Address` and `Password`.  We'll need 
 
 ### Add users / keys to instance
 
-Go ahead and add an `solum-ops` user and upload your public keys to it:
+Go ahead and add an `deis-ops` user and upload your public keys to it:
 
 ```
 $ DEIS_IP=<IP_OF_SERVER>
