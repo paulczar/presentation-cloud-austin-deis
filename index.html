@@ -55,7 +55,7 @@
 					<h3>Meetup Jan 2014</h3>-->
 					<h3>Docking with Unicorns</h3>
 					<img src="images/zebra_with_unicorn.jpg" class="stretch"><br><small>http://lady-cybercat.deviantart.com</small>
-					<p>
+					<p><a href="tech.paulcz.net/presentation-cloud-austin-deis">tech.paulcz.net/presentation-cloud-austin-deis</a>
 						<small>Created by <a href="http://tech.paulcz.net">Paul Czarkowski</a> / <a href="http://twitter.com/pczarkowski">@pczarkowski</a></small>
 					</p>
 				</section>
@@ -137,14 +137,34 @@
 				    </ul>
 				  </ul>
 				</section>
+
 				<section>
 				  <h2>What even is Deis ?</h2>
-				  <p>deploys applications
+				  <p>deploys [12 factor] applications
 				  <ul>
 				  	<li>Heroku Buildpacks
 				   	<li>Chef Recipes
 				   	<li>Docker Images
 				  </ul>
+				</section>
+
+				<section>
+				  <h2>WTF 12 factor ?</h2>
+				  <h4><a href="http://12factor.net/">http://12factor.net/</a></h4>
+				  <p>Best practices for building SAAS / SOA apps
+				  <p>Summary:  Don't be wordpress.
+				</section>
+
+				<section>
+				  <h2>Heroku Buildpacks</h2>
+				  <p>Tooling to build and deploy polyglot web applications.<br><br>
+				  <p align="left">Example: minimal NodeJS app
+<pre><code>
+example-nodejs-express
+├── package.json
+├── Procfile
+└── server.js
+</code></pre>
 				</section>
 
 				<section>
@@ -157,7 +177,7 @@
 				   <h3>Chef Server</h3>
 				  <ul>
 				   	<li>bootstraps nodes ( inc Controller )
-				   	<li>Databags* for Deis Users and Application state
+				   	<li>Databags* for Application state
 				  </ul><br><br>
 				  <p align="left"><i>* functionality moving to etcd + confd</i>
 				</section>
@@ -178,21 +198,11 @@
 				  </ul>
 				</section>
 
-
 				<section>
 				  <h2>Deis Architecture</h2>
-				   <h3>Formations</h3>
-				  <ul>
-				   	<li>groupings of <i>Layers</i>
-				   	<li>logical seperation of workloads:
-				   	<ul>
-				   	  <li>could be regions: US,EU,AU,etc
-				   	  <li>could be environment: dev, test, prod
-				   	  <li>arbitrary.
-				   	</ul>
-				  </ul>
+				   <h3>Deis Controller</h3>
+				  <img src="images/deis-controller.png">
 				</section>
-
 
 				<section>
 				  <h2>Deis Architecture</h2>
@@ -201,26 +211,22 @@
 				    <li>worker nodes for Formation
 				   	<li>sets of heterogeneous nodes
 				   	<li>scale easily
+				   	<li>Proxy Layers  - handles URL routing to app
+				   	<li>Runtime Layer - apps run here.
 				  </ul>
 				</section>
 
 				<section>
 				  <h2>Deis Architecture</h2>
-				   <h3>Proxy Layer</h3>
+				   <h3>Formations</h3>
+				  <ul>
+				   	<li>groupings of <i>Layers</i>
+				   	<li>arbitrary seperation of workloads:
 				   	<ul>
-				   	  <li>Expose Applications to internets
-				   	  <li>Nginx proxies configured by a Chef Databag
-				   	  <li>Routes requests to Containers hosted in Runtime Layer
+				   	  <li>could be regions: US,EU,AU,etc
+				   	  <li>could be environment: dev, test, prod
 				   	</ul>
-				</section>
-
-				<section>
-				  <h2>Deis Architecture</h2>
-				   <h3>Runtime Layer</h3>
-				   	<ul>
-				   	  <li>Hosts <i>Docker</i> containers for <i>Formation</i>
-				   	  <li>Use Chef Databag to deploy containers for <i>Applications</i>
-				   	</ul>
+				  </ul>
 				</section>
 
 				<section>
@@ -251,27 +257,40 @@
 
 				<section>
 				  <h2>Application Deployment</h2>
-				  <h3>Stage 1 - Build</h3>
+				  <h3>Stage 1 - Create</h3>
 				  <ul>
-				   	<li>Dev pushes code via git
-				   	<li>git push triggers app build
-				   	<li>uses <a href="https://github.com/flynn/slugbuilder">slugbuilder</a>to process buildpack into a tarball
+				    <li>Dev pulls app git repo from github
+				   	<li>Dev invokes `deis create` command
+				   	<li>deis controller creates a git repo for app
+				   	<li>deis client adds git repo as remove to local git
 				  </ul>
 				</section>
 
 				<section>
 				  <h2>Application Deployment</h2>
-				  <h3>Stage 2 - Release</h3>
+				  <h3>Stage 2 - Build</h3>
+				  <ul>
+				   	<li>Dev pushes code via 'git push deis master'
+				   	<li>git push triggers app build
+				   	<li>uses <a href="https://github.com/flynn/slugbuilder">slugbuilder</a> to process buildpack into a tarball
+				   	<li>injects tarball into <a href="https://github.com/flynn/slugrunner">slugrunner</a> container
+				  </ul>
+				</section>
+
+				<section>
+				  <h2>Application Deployment</h2>
+				  <h3>Stage 3 - Release</h3>
 				  <ul>
 				   	<li>triggered when <i>Build</i> is created or config changed
 				   	<li>Build is combined with config
 				   	<li>tags result with release #
+				   	<li>pushes resulting container to private registry
 				  </ul>
 				</section>
 
 				<section>
 				  <h2>Application Deployment</h2>
-				  <h3>Stage 3 - Run</h3>
+				  <h3>Stage 4 - Run</h3>
 				  <ul>
 				   	<li>Updates Chef databags and converges all nodes in <i>Formation</i>
 				   	<li>Specifies:
@@ -437,7 +456,7 @@ $
 				<section>
 					<h2>Install your own PAAS?</h2>
 					<p><a href="http://deis.io/get-deis/">http://deis.io/get-deis/</a>
-					<p>Guide coming soon to Rackspace Developers Blog.
+					<p><a href="https://github.com/paulczar/presentation-cloud-austin-deis/blob/gh-pages/paas.md">Install guide for Rackspace Public Cloud</a><br>
 					<img src="images/canned_unicorn.jpg"><br>
 					<small>http://www.thinkgeek.com/product/e5a7/</small>
 				</section>
