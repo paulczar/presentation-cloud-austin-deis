@@ -254,7 +254,7 @@ $ bundle exec knife rackspace server delete <INSTANCE_ID> --purge
 
 ## Build a base image for non controller Deis nodes:
 
-### Launce a new instance:
+### Launch a new instance:
 
 If we create a base image and pre-install some software we'll get a faster booting system for auto-provisioning:
 
